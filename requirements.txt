@@ -1,4 +1,4 @@
 requests
 fpdf
 Pillow
-dotenv
+python-dotenv

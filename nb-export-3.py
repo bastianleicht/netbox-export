@@ -3,18 +3,18 @@ from fpdf import FPDF
 from PIL import Image
 import io
 import os
-#from dotenv import load_dotenv
-#load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 # NetBox API URL und Token
-#NETBOX_URL = os.getenv("NETBOX_URL")
-#NETBOX_TOKEN = os.getenv("NETBOX_TOKEN")
-#TENANT_ID = os.getenv("TENANT_ID")
+NETBOX_URL = os.getenv("NETBOX_URL")
+NETBOX_TOKEN = os.getenv("NETBOX_TOKEN")
+TENANT_ID = os.getenv("TENANT_ID")
 
 # NetBox API URL und Token
-NETBOX_URL = ''
-NETBOX_TOKEN = ''
-TENANT_ID = 4  # Die ID des spezifischen Tenants, den du exportieren möchtest
+#NETBOX_URL = ''
+#NETBOX_TOKEN = ''
+#TENANT_ID = 4  # Die ID des spezifischen Tenants, den du exportieren möchtest
 
 # API-Header
 headers = {
