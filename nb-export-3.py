@@ -3,6 +3,7 @@ from fpdf import FPDF
 from PIL import Image
 import io
 import os
+import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -273,8 +274,12 @@ def export_to_pdf(tenant_data, locations):
                     pdf.cell(200, 10, txt=f"Rack Position: {device['position']}", ln=True)
                     pdf.ln(5)
 
-    pdf.output("tenant_info.pdf")
-    print("PDF wurde erfolgreich erstellt.")
+    # PDF speichern mit Tenant-Namen und Zeitstempel
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    pdf_filename = f"{tenant_data['name']}_{timestamp}.pdf"
+    pdf.output(pdf_filename)
+    print(f"PDF wurde erfolgreich als '{pdf_filename}' erstellt.")
+
 
 # Main-Funktion
 if __name__ == "__main__":
