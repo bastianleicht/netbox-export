@@ -83,16 +83,13 @@ def get_device_rearports(device_id):
         return None
 
 # Funktion, um Kabelverbindungen eines Interfaces abzurufen
-def get_cable_details(interface_id):
-    response = requests.get(f'{NETBOX_URL}dcim/interfaces/{interface_id}/', headers=headers)
+def get_cable_details(cable_id):
+    response = requests.get(f'{NETBOX_URL}dcim/cables/{cable_id}/', headers=headers)
     if response.status_code == 200:
-        interface_data = response.json()
-        if 'cable' in interface_data and interface_data['cable']:
-            cable_id = interface_data['cable']['id']
-            response_cable = requests.get(f'{NETBOX_URL}dcim/cables/{cable_id}/', headers=headers)
-            if response_cable.status_code == 200:
-                return response_cable.json()
-    return None
+        return response.json()
+    else:
+        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_cable_details(cable_id), {cable_id}]')
+        return None
 
 # Funktion, um die Bilddaten herunterzuladen und als Image-Objekt zu konvertieren
 def get_image_from_url(url):
