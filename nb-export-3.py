@@ -19,6 +19,7 @@ headers = {
     'Accept': 'application/json',
 }
 
+
 # Funktion, um die Daten eines Tenants abzurufen
 def get_tenant_data(tenant_id):
     response = requests.get(f'{NETBOX_URL}tenancy/tenants/{tenant_id}/', headers=headers)
@@ -27,6 +28,7 @@ def get_tenant_data(tenant_id):
     else:
         print(f'Fehler beim Abrufen der Tenant-Daten: {response.status_code} [get_tenant_data(tenant_id), {tenant_id}]')
         return None
+
 
 # Funktion, um die Locations eines Tenants abzurufen
 def get_tenant_locations(tenant_id):
@@ -37,6 +39,7 @@ def get_tenant_locations(tenant_id):
         print(f'Fehler beim Abrufen der Standort-Daten: {response.status_code} [get_tenant_locations(tenant_id), {tenant_id}]')
         return None
 
+
 # Funktion, um die Racks einer Location abzurufen
 def get_location_racks(location_id):
     response = requests.get(f'{NETBOX_URL}dcim/racks/?site_id={location_id}', headers=headers)
@@ -45,6 +48,7 @@ def get_location_racks(location_id):
     else:
         print(f'Fehler beim Abrufen der Rack-Daten: {response.status_code} [get_location_racks(location_id), {location_id}]')
         return None
+
 
 # Funktion, um die Devices eines Racks abzurufen
 def get_rack_devices(rack_id):
@@ -55,6 +59,7 @@ def get_rack_devices(rack_id):
         print(f'Fehler beim Abrufen der Geräte-Daten: {response.status_code} [get_rack_devices(rack_id), {rack_id}]')
         return None
 
+
 # Funktion, um die Interfaces eines Geräts abzurufen
 def get_device_interfaces(device_id):
     response = requests.get(f'{NETBOX_URL}dcim/interfaces/?device_id={device_id}', headers=headers)
@@ -63,6 +68,7 @@ def get_device_interfaces(device_id):
     else:
         print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_interfaces(device_id), {device_id}]')
         return None
+
 
 # Funktion, um die Front Ports eines Geräts abzurufen
 def get_device_frontports(device_id):
@@ -73,6 +79,7 @@ def get_device_frontports(device_id):
         print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_frontports(device_id), {device_id}]')
         return None
 
+
 # Funktion, um die Rear Ports eines Geräts abzurufen
 def get_device_rearports(device_id):
     response = requests.get(f'{NETBOX_URL}dcim/rear-ports/?device_id={device_id}', headers=headers)
@@ -81,6 +88,7 @@ def get_device_rearports(device_id):
     else:
         print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_rearports(device_id), {device_id}]')
         return None
+
 
 # Funktion, um Kabelverbindungen eines Interfaces abzurufen
 def get_cable_details(cable_id):
@@ -91,6 +99,7 @@ def get_cable_details(cable_id):
         print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_cable_details(cable_id), {cable_id}]')
         return None
 
+
 # Funktion, um die Bilddaten herunterzuladen und als Image-Objekt zu konvertieren
 def get_image_from_url(url):
     print(url)
@@ -100,6 +109,7 @@ def get_image_from_url(url):
     else:
         print(f'Fehler beim Abrufen des Bildes: {response.status_code} [get_image_from_url(url), {url}]')
         return None
+
 
 # Funktion, um die Daten in eine PDF zu exportieren
 def export_to_pdf(tenant_data, locations):
