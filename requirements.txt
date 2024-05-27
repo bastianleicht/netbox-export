@@ -1,0 +1,4 @@
+requests
+fpdf
+Pillow
+dotenv
