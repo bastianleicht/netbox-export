@@ -25,7 +25,7 @@ def get_tenant_data(tenant_id):
     if response.status_code == 200:
         return response.json()
     else:
-        print(f'Fehler beim Abrufen der Tenant-Daten: {response.status_code}')
+        print(f'Fehler beim Abrufen der Tenant-Daten: {response.status_code} [get_tenant_data(tenant_id), {tenant_id}]')
         return None
 
 # Funktion, um die Locations eines Tenants abzurufen
@@ -34,7 +34,7 @@ def get_tenant_locations(tenant_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Standort-Daten: {response.status_code}')
+        print(f'Fehler beim Abrufen der Standort-Daten: {response.status_code} [get_tenant_locations(tenant_id), {tenant_id}]')
         return None
 
 # Funktion, um die Racks einer Location abzurufen
@@ -43,7 +43,7 @@ def get_location_racks(location_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Rack-Daten: {response.status_code}')
+        print(f'Fehler beim Abrufen der Rack-Daten: {response.status_code} [get_location_racks(location_id), {location_id}]')
         return None
 
 # Funktion, um die Devices eines Racks abzurufen
@@ -52,7 +52,7 @@ def get_rack_devices(rack_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Geräte-Daten: {response.status_code}')
+        print(f'Fehler beim Abrufen der Geräte-Daten: {response.status_code} [get_rack_devices(rack_id), {rack_id}]')
         return None
 
 # Funktion, um die Interfaces eines Geräts abzurufen
@@ -61,7 +61,7 @@ def get_device_interfaces(device_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code}')
+        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_interfaces(device_id), {device_id}]')
         return None
 
 # Funktion, um die Front Ports eines Geräts abzurufen
@@ -70,7 +70,7 @@ def get_device_frontports(device_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code}')
+        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_frontports(device_id), {device_id}]')
         return None
 
 # Funktion, um die Rear Ports eines Geräts abzurufen
@@ -79,7 +79,7 @@ def get_device_rearports(device_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code}')
+        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_rearports(device_id), {device_id}]')
         return None
 
 # Funktion, um Kabelverbindungen eines Interfaces abzurufen
@@ -101,7 +101,7 @@ def get_image_from_url(url):
     if response.status_code == 200:
         return Image.open(io.BytesIO(response.content))
     else:
-        print(f'Fehler beim Abrufen des Bildes: {response.status_code}')
+        print(f'Fehler beim Abrufen des Bildes: {response.status_code} [get_image_from_url(url), {url}]')
         return None
 
 # Funktion, um die Daten in eine PDF zu exportieren
