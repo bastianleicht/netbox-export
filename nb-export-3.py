@@ -204,6 +204,7 @@ def export_to_pdf(tenant_data, locations):
                         pdf.ln(5)
                     pdf.ln(2.5)
 
+                    pdf.add_page()
                     pdf.cell(200, 10, txt="Rear-Ports:", ln=True)
                     pdf.set_font("Arial", size=10)
                     pdf.cell(30, 10, txt="Name", border=1)
