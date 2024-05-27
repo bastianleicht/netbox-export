@@ -178,31 +178,31 @@ def export_to_pdf(tenant_data, locations):
                     pdf.cell(20, 10, txt="Color", border=1)
                     pdf.ln(10)
                     for interface in frontports:
-                        pdf.cell(30, 10, txt=interface['name'], border=1)
-                        pdf.cell(40, 10, txt=interface['type']['label'], border=1)
+                        pdf.cell(30, 5, txt=interface['name'], border=1)
+                        pdf.cell(40, 5, txt=interface['type']['label'], border=1)
                         if interface['cable']:
                             cable = get_cable_details(interface['cable']['id'])
                             if cable and cable['a_terminations']:
                                 connected_to = cable['a_terminations'][0]['object']['device']['name'] + " - " + \
                                                cable['a_terminations'][0]['object']['device']['display']
-                                pdf.cell(50, 10, txt=connected_to, border=1)
-                                pdf.cell(35, 10, txt=cable['type'], border=1)
+                                pdf.cell(50, 5, txt=connected_to, border=1)
+                                pdf.cell(35, 5, txt=cable['type'], border=1)
                                 length = cable['length'] if cable['length'] else 'N/A'
                                 length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
-                                pdf.cell(15, 10, txt=str(length) + ' ' + str(length_unit), border=1)
-                                pdf.cell(20, 10, txt=cable['color'], border=1)
+                                pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
+                                pdf.cell(20, 5, txt=cable['color'], border=1)
                             else:
-                                pdf.cell(50, 10, txt="N/A", border=1)
-                                pdf.cell(35, 10, txt="N/A", border=1)
-                                pdf.cell(15, 10, txt="N/A", border=1)
-                                pdf.cell(20, 10, txt="N/A", border=1)
+                                pdf.cell(50, 5, txt="N/A", border=1)
+                                pdf.cell(35, 5, txt="N/A", border=1)
+                                pdf.cell(15, 5, txt="N/A", border=1)
+                                pdf.cell(20, 5, txt="N/A", border=1)
                         else:
-                            pdf.cell(50, 10, txt="N/A", border=1)
-                            pdf.cell(35, 10, txt="N/A", border=1)
-                            pdf.cell(15, 10, txt="N/A", border=1)
-                            pdf.cell(20, 10, txt="N/A", border=1)
-                        pdf.ln(10)
-                    pdf.ln(5)
+                            pdf.cell(50, 5, txt="N/A", border=1)
+                            pdf.cell(35, 5, txt="N/A", border=1)
+                            pdf.cell(15, 5, txt="N/A", border=1)
+                            pdf.cell(20, 5, txt="N/A", border=1)
+                        pdf.ln(5)
+                    pdf.ln(2.5)
 
                     pdf.cell(200, 10, txt="Rear-Ports:", ln=True)
                     pdf.set_font("Arial", size=10)
@@ -214,74 +214,70 @@ def export_to_pdf(tenant_data, locations):
                     pdf.cell(20, 10, txt="Color", border=1)
                     pdf.ln(10)
                     for interface in rearports:
-                        pdf.cell(30, 10, txt=interface['name'], border=1)
-                        pdf.cell(40, 10, txt=interface['type']['label'], border=1)
+                        pdf.cell(30, 5, txt=interface['name'], border=1)
+                        pdf.cell(40, 5, txt=interface['type']['label'], border=1)
                         if interface['cable']:
                             cable = get_cable_details(interface['cable']['id'])
-                            print(cable['id'])
                             if cable and cable['a_terminations']:
-                                print(cable['a_terminations'][0]['object']['id'])
                                 connected_to = cable['a_terminations'][0]['object']['device']['name'] + " - " + \
                                                cable['a_terminations'][0]['object']['device']['display']
-                                pdf.cell(50, 10, txt=connected_to, border=1)
-                                pdf.cell(35, 10, txt=cable['type'], border=1)
+                                pdf.cell(50, 5, txt=connected_to, border=1)
+                                pdf.cell(35, 5, txt=cable['type'], border=1)
                                 length = cable['length'] if cable['length'] else 'N/A'
                                 length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
-                                pdf.cell(15, 10, txt=str(length) + ' ' + str(length_unit), border=1)
-                                pdf.cell(20, 10, txt=cable['color'], border=1)
+                                pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
+                                pdf.cell(20, 5, txt=cable['color'], border=1)
                             else:
-                                pdf.cell(50, 10, txt="N/A", border=1)
-                                pdf.cell(35, 10, txt="N/A", border=1)
-                                pdf.cell(15, 10, txt="N/A", border=1)
-                                pdf.cell(20, 10, txt="N/A", border=1)
+                                pdf.cell(50, 5, txt="N/A", border=1)
+                                pdf.cell(35, 5, txt="N/A", border=1)
+                                pdf.cell(15, 5, txt="N/A", border=1)
+                                pdf.cell(20, 5, txt="N/A", border=1)
                         else:
-                            pdf.cell(50, 10, txt="N/A", border=1)
-                            pdf.cell(35, 10, txt="N/A", border=1)
-                            pdf.cell(15, 10, txt="N/A", border=1)
-                            pdf.cell(20, 10, txt="N/A", border=1)
-                        pdf.ln(10)
-                    pdf.ln(5)
+                            pdf.cell(50, 5, txt="N/A", border=1)
+                            pdf.cell(35, 5, txt="N/A", border=1)
+                            pdf.cell(15, 5, txt="N/A", border=1)
+                            pdf.cell(20, 5, txt="N/A", border=1)
+                        pdf.ln(5)
+                    pdf.ln(2.5)
 
 
                 interfaces = get_device_interfaces(device['id'])
                 if interfaces:
-                    pdf.cell(200, 10, txt="Interfaces:", ln=True)
+                    pdf.cell(200, 5, txt="Interfaces:", ln=True)
                     pdf.set_font("Arial", size=10)
-                    pdf.cell(30, 10, txt="Name", border=1)
-                    pdf.cell(40, 10, txt="Type", border=1)
-                    pdf.cell(50, 10, txt="Connected To", border=1)
-                    pdf.cell(35, 10, txt="Cable Type", border=1)
-                    pdf.cell(15, 10, txt="Length", border=1)
-                    pdf.cell(20, 10, txt="Color", border=1)
-                    pdf.ln(10)
+                    pdf.cell(30, 5, txt="Name", border=1)
+                    pdf.cell(40, 5, txt="Type", border=1)
+                    pdf.cell(50, 5, txt="Connected To", border=1)
+                    pdf.cell(35, 5, txt="Cable Type", border=1)
+                    pdf.cell(15, 5, txt="Length", border=1)
+                    pdf.cell(20, 5, txt="Color", border=1)
+                    pdf.ln(5)
                     for interface in interfaces:
-                        pdf.cell(30, 10, txt=interface['name'], border=1)
-                        pdf.cell(40, 10, txt=interface['type']['label'], border=1)
+                        pdf.cell(30, 5, txt=interface['name'], border=1)
+                        pdf.cell(40, 5, txt=interface['type']['label'], border=1)
                         if interface['cable']:
                             cable = get_cable_details(interface['cable']['id'])
-                            print(cable['id'])
                             if cable and cable['a_terminations']:
-                                print(cable['a_terminations'][0]['object']['id'])
                                 connected_to = cable['a_terminations'][0]['object']['device']['name'] + " - " + \
                                                cable['a_terminations'][0]['object']['device']['display']
-                                pdf.cell(50, 10, txt=connected_to, border=1)
-                                pdf.cell(35, 10, txt=cable['type'], border=1)
+                                pdf.cell(50, 5, txt=connected_to, border=1)
+                                pdf.cell(35, 5, txt=cable['type'], border=1)
                                 length = cable['length'] if cable['length'] else 'N/A'
                                 length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
-                                pdf.cell(15, 10, txt=str(length) + ' ' + str(length_unit), border=1)
-                                pdf.cell(20, 10, txt=cable['color'], border=1)
+                                pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
+                                pdf.cell(20, 5, txt=cable['color'], border=1)
                             else:
-                                pdf.cell(50, 10, txt="N/A", border=1)
-                                pdf.cell(35, 10, txt="N/A", border=1)
-                                pdf.cell(15, 10, txt="N/A", border=1)
-                                pdf.cell(20, 10, txt="N/A", border=1)
+                                pdf.cell(50, 5, txt="N/A", border=1)
+                                pdf.cell(35, 5, txt="N/A", border=1)
+                                pdf.cell(15, 5, txt="N/A", border=1)
+                                pdf.cell(20, 5, txt="N/A", border=1)
                         else:
-                            pdf.cell(50, 10, txt="N/A", border=1)
-                            pdf.cell(35, 10, txt="N/A", border=1)
-                            pdf.cell(15, 10, txt="N/A", border=1)
-                            pdf.cell(20, 10, txt="N/A", border=1)
-                        pdf.ln(10)
-                    pdf.ln(5)
+                            pdf.cell(50, 5, txt="N/A", border=1)
+                            pdf.cell(35, 5, txt="N/A", border=1)
+                            pdf.cell(15, 5, txt="N/A", border=1)
+                            pdf.cell(20, 5, txt="N/A", border=1)
+                        pdf.ln(5)
+                    pdf.ln(2.5)
 
                 if 'custom_fields' in device:
                     pdf.cell(200, 10, txt="Custom Fields:", ln=True)
