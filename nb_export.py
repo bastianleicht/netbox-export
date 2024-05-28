@@ -229,10 +229,10 @@ def export_device_interfaces(pdf, device):
         pdf.set_font("Arial", size=10)
         pdf.cell(30, 5, txt="Name", border=1)
         pdf.cell(40, 5, txt="Type", border=1)
-        pdf.cell(40, 5, txt="Possible VLANs", border=1)
+        pdf.cell(50, 5, txt="Possible VLANs", border=1)
         pdf.cell(50, 5, txt="IP Addresses", border=1)
         pdf.cell(50, 5, txt="Connected To", border=1)
-        pdf.cell(35, 5, txt="Cable Type", border=1)
+        pdf.cell(25, 5, txt="Cable Type", border=1)
         pdf.cell(15, 5, txt="Length", border=1)
         pdf.cell(20, 5, txt="Color", border=1)
         pdf.ln(5)
@@ -244,27 +244,27 @@ def export_device_interfaces(pdf, device):
                 termination = get_connected_termination(device['id'], cable)
                 if termination:
                     vlans = get_interface_vlans(interface)
-                    pdf.cell(40, 5, txt=vlans, border=1)
+                    pdf.cell(50, 5, txt=vlans, border=1)
                     pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]), border=1)
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
-                    pdf.cell(35, 5, txt=cable['type'], border=1)
+                    pdf.cell(25, 5, txt=cable['type'], border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
                     pdf.cell(20, 5, txt=cable['color'], border=1)
                 else:
-                    pdf.cell(40, 5, txt="N/A", border=1)
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(50, 5, txt="N/A", border=1)
-                    pdf.cell(35, 5, txt="N/A", border=1)
+                    pdf.cell(50, 5, txt="N/A", border=1)
+                    pdf.cell(25, 5, txt="N/A", border=1)
                     pdf.cell(15, 5, txt="N/A", border=1)
                     pdf.cell(20, 5, txt="N/A", border=1)
             else:
-                pdf.cell(40, 5, txt="N/A", border=1)
                 pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(50, 5, txt="N/A", border=1)
-                pdf.cell(35, 5, txt="N/A", border=1)
+                pdf.cell(50, 5, txt="N/A", border=1)
+                pdf.cell(25, 5, txt="N/A", border=1)
                 pdf.cell(15, 5, txt="N/A", border=1)
                 pdf.cell(20, 5, txt="N/A", border=1)
             pdf.ln(5)
@@ -368,6 +368,7 @@ def export_to_pdf(tenant_data, locations):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     pdf_filename = f"{tenant_data['name']}_{timestamp}.pdf"
     pdf.output(pdf_filename)
+    pdf.output("test.pdf")
     print(f"PDF wurde erfolgreich als '{pdf_filename}' erstellt.")
 
 
