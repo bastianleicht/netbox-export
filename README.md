@@ -26,7 +26,7 @@ TENANT_NAME=your-tenant-id
 
 2. Run the script
 ```bash
-python nb-export.py
+python nb_export.py
 ```
 
 ## ToDo
