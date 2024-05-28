@@ -329,8 +329,13 @@ def export_to_pdf(tenant_data, locations):
 
 
 # Main-Funktion
-if __name__ == "__main__":
+def main():
     tenant_data = get_tenant_data(TENANT_ID)
     locations = get_tenant_locations(TENANT_ID)
     if tenant_data and locations is not None:
         export_to_pdf(tenant_data, locations)
+
+
+# Main-Funktion
+if __name__ == "__main__":
+    main()
