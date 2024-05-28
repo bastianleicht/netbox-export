@@ -20,6 +20,17 @@ headers = {
     'Accept': 'application/json',
 }
 
+class PDF(FPDF):
+    def header(self):
+        self.set_font("Arial", 'B', 12)
+        self.cell(0, 10, 'NetBox Device Report', 0, 1, 'C')
+        self.ln(5)
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font("Arial", 'I', 8)
+        self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
+
 
 # Funktion, um die Daten eines Tenants abzurufen
 def get_tenant_data(tenant_id):
@@ -257,7 +268,7 @@ def export_device_interfaces(pdf, device):
 
 # Funktion, um die Daten in eine PDF zu exportieren
 def export_to_pdf(tenant_data, locations):
-    pdf = FPDF()
+    pdf = PDF()
     pdf.set_auto_page_break(auto=True, margin=15)
 
     # Tenant-Informationen zur PDF hinzufügen
