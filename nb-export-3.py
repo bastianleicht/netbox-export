@@ -5,6 +5,7 @@ import io
 import os
 import datetime
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # NetBox API URL und Token
@@ -36,7 +37,8 @@ def get_tenant_locations(tenant_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Standort-Daten: {response.status_code} [get_tenant_locations(tenant_id), {tenant_id}]')
+        print(
+            f'Fehler beim Abrufen der Standort-Daten: {response.status_code} [get_tenant_locations(tenant_id), {tenant_id}]')
         return None
 
 
@@ -46,7 +48,8 @@ def get_location_racks(location_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Rack-Daten: {response.status_code} [get_location_racks(location_id), {location_id}]')
+        print(
+            f'Fehler beim Abrufen der Rack-Daten: {response.status_code} [get_location_racks(location_id), {location_id}]')
         return None
 
 
@@ -66,7 +69,8 @@ def get_device_interfaces(device_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_interfaces(device_id), {device_id}]')
+        print(
+            f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_interfaces(device_id), {device_id}]')
         return None
 
 
@@ -76,7 +80,8 @@ def get_device_frontports(device_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_frontports(device_id), {device_id}]')
+        print(
+            f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_frontports(device_id), {device_id}]')
         return None
 
 
@@ -86,7 +91,8 @@ def get_device_rearports(device_id):
     if response.status_code == 200:
         return response.json()['results']
     else:
-        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_rearports(device_id), {device_id}]')
+        print(
+            f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_device_rearports(device_id), {device_id}]')
         return None
 
 
@@ -96,7 +102,8 @@ def get_cable_details(cable_id):
     if response.status_code == 200:
         return response.json()
     else:
-        print(f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_cable_details(cable_id), {cable_id}]')
+        print(
+            f'Fehler beim Abrufen der Schnittstellen-Daten: {response.status_code} [get_cable_details(cable_id), {cable_id}]')
         return None
 
 
@@ -119,6 +126,7 @@ def get_image_from_url(url):
     else:
         print(f'Fehler beim Abrufen des Bildes: {response.status_code} [get_image_from_url(url), {url}]')
         return None
+
 
 def export_device_interfaces(pdf, device):
     frontports = get_device_frontports(device['id'])
