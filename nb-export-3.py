@@ -100,6 +100,16 @@ def get_cable_details(cable_id):
         return None
 
 
+# Funktion, um alle Geräte eines Tenants abzurufen
+def get_all_devices(tenant_id):
+    response = requests.get(f'{NETBOX_URL}dcim/devices/?tenant_id={tenant_id}', headers=headers)
+    if response.status_code == 200:
+        return response.json()['results']
+    else:
+        print(f'Fehler beim Abrufen der Geräte-Daten: {response.status_code} [get_all_devices(tenant_id), {tenant_id}]')
+        return None
+
+
 # Funktion, um die Bilddaten herunterzuladen und als Image-Objekt zu konvertieren
 def get_image_from_url(url):
     print(url)
@@ -242,11 +252,15 @@ def export_to_pdf(tenant_data, locations):
     pdf.cell(200, 10, txt=f"Description: {tenant_data['description']}", ln=True)
     pdf.ln(10)
 
+    devices_processed = set()
+
     for location in locations:
         pdf.add_page()
         pdf.set_font("Arial", size=14)
         pdf.cell(200, 10, txt=f"Location: {location['name']}", ln=True, align='C')
         pdf.ln(5)
+
+        all_devices = get_all_devices(tenant_data['id'])
 
         racks = get_location_racks(location['id'])
         for rack in racks:
@@ -265,7 +279,6 @@ def export_to_pdf(tenant_data, locations):
             pdf.cell(200, 10, txt=f"Role: {rack['role']['name'] if rack['role'] else 'N/A'}", ln=True)
             pdf.cell(200, 10, txt=f"Comments: {rack['comments']}", ln=True)
             pdf.ln(10)
-
 
             devices = get_rack_devices(rack['id'])
             for device in devices:
@@ -291,6 +304,22 @@ def export_to_pdf(tenant_data, locations):
                 if 'rack' in device and device['rack']:
                     pdf.cell(200, 10, txt=f"Rack Position: {device['position']}", ln=True)
                     pdf.ln(5)
+
+        # Geräte ohne Rack hinzufügen
+        for device in all_devices:
+            if device['id'] not in devices_processed:
+                pdf.add_page()
+                pdf.set_font("Arial", size=14)
+                pdf.cell(200, 10, txt=f"Device Name: {device['name']}", ln=True, align='C')
+                pdf.ln(10)
+                pdf.set_font("Arial", size=12)
+                pdf.cell(200, 10, txt=f"Device Type: {device['device_type']['model']}", ln=True)
+                pdf.cell(200, 10, txt=f"Device Role: {device['device_role']['name']}", ln=True)
+                pdf.cell(200, 10, txt=f"Serial Number: {device['serial']}", ln=True)
+                pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
+                pdf.ln(5)
+
+                export_device_interfaces(pdf, device)
 
     # PDF speichern mit Tenant-Namen und Zeitstempel
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
