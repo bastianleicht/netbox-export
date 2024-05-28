@@ -1,10 +1,10 @@
 import requests
 from fpdf import FPDF
-from PIL import Image
-import io
 import os
 import datetime
 from dotenv import load_dotenv
+
+from export_helper import get_connected_termination
 
 load_dotenv()
 
@@ -128,28 +128,21 @@ def get_all_devices(tenant_id):
         return None
 
 
-# Funktion, um die Bilddaten herunterzuladen und als Image-Objekt zu konvertieren
-def get_image_from_url(url):
-    print(url)
-    response = requests.get(url)
-    if response.status_code == 200:
-        return Image.open(io.BytesIO(response.content))
-    else:
-        print(f'Fehler beim Abrufen des Bildes: {response.status_code} [get_image_from_url(url), {url}]')
-        return None
+def get_interface_vlans(interface):
+    interface_vlans = ""
+
+    if interface['untagged_vlan']:
+        for vlan in interface['untagged_vlan']:
+            interface_vlans += f"{vlan['vid']}U,"
+
+    if interface['tagged_vlans']:
+        for vlan in interface['tagged_vlans']:
+            interface_vlans += f"{vlan['vid']}T,"
+
+    return interface_vlans[:-2]
 
 
-# Funktion, um die verbundene Termination zu bestimmen
-def get_connected_termination(device_id, cable):
-    for termination in cable['a_terminations']:
-        if termination['object']['device']['id'] != device_id:
-            return termination
-    for termination in cable['b_terminations']:
-        if termination['object']['device']['id'] != device_id:
-            return termination
-    return None
-
-
+# Export device interfaces to PDF
 def export_device_interfaces(pdf, device):
     frontports = get_device_frontports(device['id'])
     rearports = get_device_rearports(device['id'])
@@ -158,6 +151,8 @@ def export_device_interfaces(pdf, device):
         pdf.set_font("Arial", size=10)
         pdf.cell(30, 10, txt="Name", border=1)
         pdf.cell(40, 10, txt="Type", border=1)
+        pdf.cell(40, 5, txt="Possible VLANs", border=1)
+        pdf.cell(50, 5, txt="IP Addresses", border=1)
         pdf.cell(50, 10, txt="Connected To", border=1)
         pdf.cell(35, 10, txt="Cable Type", border=1)
         pdf.cell(15, 10, txt="Length", border=1)
@@ -173,6 +168,9 @@ def export_device_interfaces(pdf, device):
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
+                    vlans = get_interface_vlans(interface)
+                    pdf.cell(40, 5, txt=vlans, border=1)
+                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]), border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
@@ -180,11 +178,15 @@ def export_device_interfaces(pdf, device):
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(35, 5, txt="N/A", border=1)
+                    pdf.cell(40, 5, txt="N/A", border=1)
+                    pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(15, 5, txt="N/A", border=1)
                     pdf.cell(20, 5, txt="N/A", border=1)
             else:
                 pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(35, 5, txt="N/A", border=1)
+                pdf.cell(40, 5, txt="N/A", border=1)
+                pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(15, 5, txt="N/A", border=1)
                 pdf.cell(20, 5, txt="N/A", border=1)
             pdf.ln(5)
@@ -210,6 +212,10 @@ def export_device_interfaces(pdf, device):
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
+                    vlans = get_interface_vlans(interface)
+                    pdf.cell(40, 5, txt=vlans, border=1)
+                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]),
+                             border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
@@ -217,11 +223,15 @@ def export_device_interfaces(pdf, device):
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(35, 5, txt="N/A", border=1)
+                    pdf.cell(40, 5, txt="N/A", border=1)
+                    pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(15, 5, txt="N/A", border=1)
                     pdf.cell(20, 5, txt="N/A", border=1)
             else:
                 pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(35, 5, txt="N/A", border=1)
+                pdf.cell(40, 5, txt="N/A", border=1)
+                pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(15, 5, txt="N/A", border=1)
                 pdf.cell(20, 5, txt="N/A", border=1)
             pdf.ln(5)
@@ -248,6 +258,10 @@ def export_device_interfaces(pdf, device):
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
+                    vlans = get_interface_vlans(interface)
+                    pdf.cell(40, 5, txt=vlans, border=1)
+                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]),
+                             border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
@@ -255,23 +269,27 @@ def export_device_interfaces(pdf, device):
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(35, 5, txt="N/A", border=1)
+                    pdf.cell(40, 5, txt="N/A", border=1)
+                    pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(15, 5, txt="N/A", border=1)
                     pdf.cell(20, 5, txt="N/A", border=1)
             else:
                 pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(35, 5, txt="N/A", border=1)
+                pdf.cell(40, 5, txt="N/A", border=1)
+                pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(15, 5, txt="N/A", border=1)
                 pdf.cell(20, 5, txt="N/A", border=1)
             pdf.ln(5)
         pdf.ln(2.5)
 
 
-# Funktion, um die Daten in eine PDF zu exportieren
+# Export as PDF
 def export_to_pdf(tenant_data, locations):
     pdf = PDF()
     pdf.set_auto_page_break(auto=True, margin=15)
 
-    # Tenant-Informationen zur PDF hinzufügen
+    # Add Tenant Information
     pdf.add_page()
     pdf.set_font("Arial", size=16)
     pdf.cell(200, 10, txt="Tenant Information", ln=True, align='C')
@@ -285,6 +303,7 @@ def export_to_pdf(tenant_data, locations):
     devices_processed = set()
 
     for location in locations:
+        # Add Locations
         pdf.add_page()
         pdf.set_font("Arial", size=14)
         pdf.cell(200, 10, txt=f"Location: {location['name']}", ln=True, align='C')
@@ -293,7 +312,8 @@ def export_to_pdf(tenant_data, locations):
         all_devices = get_all_devices(tenant_data['id'])
 
         racks = get_location_racks(location['id'])
-        for rack in racks:
+        for rack in racks:    
+            # Add Rack Information
             pdf.add_page()
             pdf.set_font("Arial", size=14)
             pdf.cell(200, 10, txt=f"Rack: {rack['name']}", ln=True, align='C')
@@ -312,6 +332,7 @@ def export_to_pdf(tenant_data, locations):
 
             devices = get_rack_devices(rack['id'])
             for device in devices:
+                # Add Devices
                 pdf.add_page()
                 pdf.set_font("Arial", size=14)
                 pdf.cell(200, 10, txt=f"Device Name: {device['name']}", ln=True, align='C')
@@ -323,8 +344,10 @@ def export_to_pdf(tenant_data, locations):
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
                 pdf.ln(5)
 
+                # Add Interfaces
                 export_device_interfaces(pdf, device)
 
+                # Add Custom Fields if available
                 if 'custom_fields' in device:
                     pdf.cell(200, 10, txt="Custom Fields:", ln=True)
                     for field, value in device['custom_fields'].items():
@@ -335,9 +358,10 @@ def export_to_pdf(tenant_data, locations):
                     pdf.cell(200, 10, txt=f"Rack Position: {device['position']}", ln=True)
                     pdf.ln(5)
 
-        # Geräte ohne Rack hinzufügen
+        # Add Devices without Rack
         for device in all_devices:
             if device['id'] not in devices_processed:
+                # Add Devices
                 pdf.add_page()
                 pdf.set_font("Arial", size=14)
                 pdf.cell(200, 10, txt=f"Device Name: {device['name']}", ln=True, align='C')
@@ -349,16 +373,16 @@ def export_to_pdf(tenant_data, locations):
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
                 pdf.ln(5)
 
+                # Add Interfaces
                 export_device_interfaces(pdf, device)
 
-    # PDF speichern mit Tenant-Namen und Zeitstempel
+    # Save PDF with Tenant Name and Timestamp
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     pdf_filename = f"{tenant_data['name']}_{timestamp}.pdf"
     pdf.output(pdf_filename)
     print(f"PDF wurde erfolgreich als '{pdf_filename}' erstellt.")
 
 
-# Main-Funktion
 def main():
     tenant_data = get_tenant_data(TENANT_ID)
     locations = get_tenant_locations(TENANT_ID)
