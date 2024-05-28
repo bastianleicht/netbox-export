@@ -20,6 +20,7 @@ headers = {
     'Accept': 'application/json',
 }
 
+
 class PDF(FPDF):
     def header(self):
         self.set_font("Arial", 'B', 12)
@@ -147,12 +148,11 @@ def export_device_interfaces(pdf, device):
     frontports = get_device_frontports(device['id'])
     rearports = get_device_rearports(device['id'])
     if device['device_role']['name'] == "Patchpanel":
+        pdf.add_page(orientation="L")
         pdf.cell(200, 10, txt="Front-Ports:", ln=True)
         pdf.set_font("Arial", size=10)
         pdf.cell(30, 10, txt="Name", border=1)
         pdf.cell(40, 10, txt="Type", border=1)
-        pdf.cell(40, 5, txt="Possible VLANs", border=1)
-        pdf.cell(50, 5, txt="IP Addresses", border=1)
         pdf.cell(50, 10, txt="Connected To", border=1)
         pdf.cell(35, 10, txt="Cable Type", border=1)
         pdf.cell(15, 10, txt="Length", border=1)
@@ -168,9 +168,6 @@ def export_device_interfaces(pdf, device):
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
-                    vlans = get_interface_vlans(interface)
-                    pdf.cell(40, 5, txt=vlans, border=1)
-                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]), border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
@@ -178,21 +175,17 @@ def export_device_interfaces(pdf, device):
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(35, 5, txt="N/A", border=1)
-                    pdf.cell(40, 5, txt="N/A", border=1)
-                    pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(15, 5, txt="N/A", border=1)
                     pdf.cell(20, 5, txt="N/A", border=1)
             else:
                 pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(35, 5, txt="N/A", border=1)
-                pdf.cell(40, 5, txt="N/A", border=1)
-                pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(15, 5, txt="N/A", border=1)
                 pdf.cell(20, 5, txt="N/A", border=1)
             pdf.ln(5)
         pdf.ln(2.5)
 
-        pdf.add_page()
+        pdf.add_page(orientation="L")
         pdf.cell(200, 10, txt="Rear-Ports:", ln=True)
         pdf.set_font("Arial", size=10)
         pdf.cell(30, 10, txt="Name", border=1)
@@ -212,10 +205,6 @@ def export_device_interfaces(pdf, device):
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
-                    vlans = get_interface_vlans(interface)
-                    pdf.cell(40, 5, txt=vlans, border=1)
-                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]),
-                             border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
@@ -223,15 +212,11 @@ def export_device_interfaces(pdf, device):
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(35, 5, txt="N/A", border=1)
-                    pdf.cell(40, 5, txt="N/A", border=1)
-                    pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(15, 5, txt="N/A", border=1)
                     pdf.cell(20, 5, txt="N/A", border=1)
             else:
                 pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(35, 5, txt="N/A", border=1)
-                pdf.cell(40, 5, txt="N/A", border=1)
-                pdf.cell(50, 5, txt="N/A", border=1)
                 pdf.cell(15, 5, txt="N/A", border=1)
                 pdf.cell(20, 5, txt="N/A", border=1)
             pdf.ln(5)
@@ -239,10 +224,13 @@ def export_device_interfaces(pdf, device):
 
     interfaces = get_device_interfaces(device['id'])
     if interfaces:
+        pdf.add_page(orientation="L")
         pdf.cell(200, 5, txt="Interfaces:", ln=True)
         pdf.set_font("Arial", size=10)
         pdf.cell(30, 5, txt="Name", border=1)
         pdf.cell(40, 5, txt="Type", border=1)
+        pdf.cell(40, 5, txt="Possible VLANs", border=1)
+        pdf.cell(50, 5, txt="IP Addresses", border=1)
         pdf.cell(50, 5, txt="Connected To", border=1)
         pdf.cell(35, 5, txt="Cable Type", border=1)
         pdf.cell(15, 5, txt="Length", border=1)
@@ -255,29 +243,28 @@ def export_device_interfaces(pdf, device):
                 cable = get_cable_details(interface['cable']['id'])
                 termination = get_connected_termination(device['id'], cable)
                 if termination:
+                    vlans = get_interface_vlans(interface)
+                    pdf.cell(40, 5, txt=vlans, border=1)
+                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]), border=1)
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
-                    vlans = get_interface_vlans(interface)
-                    pdf.cell(40, 5, txt=vlans, border=1)
-                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]),
-                             border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
                     pdf.cell(20, 5, txt=cable['color'], border=1)
                 else:
-                    pdf.cell(50, 5, txt="N/A", border=1)
-                    pdf.cell(35, 5, txt="N/A", border=1)
                     pdf.cell(40, 5, txt="N/A", border=1)
                     pdf.cell(50, 5, txt="N/A", border=1)
+                    pdf.cell(50, 5, txt="N/A", border=1)
+                    pdf.cell(35, 5, txt="N/A", border=1)
                     pdf.cell(15, 5, txt="N/A", border=1)
                     pdf.cell(20, 5, txt="N/A", border=1)
             else:
-                pdf.cell(50, 5, txt="N/A", border=1)
-                pdf.cell(35, 5, txt="N/A", border=1)
                 pdf.cell(40, 5, txt="N/A", border=1)
                 pdf.cell(50, 5, txt="N/A", border=1)
+                pdf.cell(50, 5, txt="N/A", border=1)
+                pdf.cell(35, 5, txt="N/A", border=1)
                 pdf.cell(15, 5, txt="N/A", border=1)
                 pdf.cell(20, 5, txt="N/A", border=1)
             pdf.ln(5)
@@ -354,6 +341,7 @@ def export_to_pdf(tenant_data, locations):
                         pdf.cell(200, 10, txt=f" - {field}: {value}", ln=True)
                     pdf.ln(5)
 
+                # Add Rack Position if available
                 if 'rack' in device and device['rack']:
                     pdf.cell(200, 10, txt=f"Rack Position: {device['position']}", ln=True)
                     pdf.ln(5)
