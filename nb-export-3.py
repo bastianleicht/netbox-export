@@ -128,6 +128,17 @@ def get_image_from_url(url):
         return None
 
 
+# Funktion, um die verbundene Termination zu bestimmen
+def get_connected_termination(device_id, cable):
+    for termination in cable['a_terminations']:
+        if termination['object']['device']['id'] != device_id:
+            return termination
+    for termination in cable['b_terminations']:
+        if termination['object']['device']['id'] != device_id:
+            return termination
+    return None
+
+
 def export_device_interfaces(pdf, device):
     frontports = get_device_frontports(device['id'])
     rearports = get_device_rearports(device['id'])
@@ -146,9 +157,9 @@ def export_device_interfaces(pdf, device):
             pdf.cell(40, 5, txt=interface['type']['label'], border=1)
             if interface['cable']:
                 cable = get_cable_details(interface['cable']['id'])
-                if cable and cable['a_terminations']:
-                    connected_to = cable['a_terminations'][0]['object']['device']['name'] + " - " + \
-                                   cable['a_terminations'][0]['object']['device']['display']
+                termination = get_connected_termination(device['id'], cable)
+                if termination:
+                    connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
@@ -183,9 +194,9 @@ def export_device_interfaces(pdf, device):
             pdf.cell(40, 5, txt=interface['type']['label'], border=1)
             if interface['cable']:
                 cable = get_cable_details(interface['cable']['id'])
-                if cable and cable['a_terminations']:
-                    connected_to = cable['a_terminations'][0]['object']['device']['name'] + " - " + \
-                                   cable['a_terminations'][0]['object']['device']['display']
+                termination = get_connected_termination(device['id'], cable)
+                if termination:
+                    connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
@@ -221,9 +232,9 @@ def export_device_interfaces(pdf, device):
             pdf.cell(40, 5, txt=interface['type']['label'], border=1)
             if interface['cable']:
                 cable = get_cable_details(interface['cable']['id'])
-                if cable and cable['a_terminations']:
-                    connected_to = cable['a_terminations'][0]['object']['device']['name'] + " - " + \
-                                   cable['a_terminations'][0]['object']['device']['display']
+                termination = get_connected_termination(device['id'], cable)
+                if termination:
+                    connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(35, 5, txt=cable['type'], border=1)
                     length = cable['length'] if cable['length'] else 'N/A'
