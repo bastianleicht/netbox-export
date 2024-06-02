@@ -330,10 +330,10 @@ def export_to_pdf(tenant_data, locations):
             pdf.cell(200, 10, txt=f"Width: {rack['width']}", ln=True)
             pdf.cell(200, 10, txt=f"Height: {rack['u_height']} U", ln=True)
             pdf.cell(200, 10, txt=f"Status: {rack['status']['label']}", ln=True)
-            pdf.cell(200, 10, txt=f"Serial Number: {rack['serial']}", ln=True)
+            pdf.cell(200, 10, txt=f"Serial Number: {rack['serial'] if rack['serial'] else 'N/A'}", ln=True)
             pdf.cell(200, 10, txt=f"Asset Tag: {rack['asset_tag']}", ln=True)
             pdf.cell(200, 10, txt=f"Role: {rack['role']['name'] if rack['role'] else 'N/A'}", ln=True)
-            pdf.cell(200, 10, txt=f"Comments: {rack['comments']}", ln=True)
+            pdf.cell(200, 10, txt=f"Comments: {rack['comments'] if rack['comments'] else 'N/A'}", ln=True)
             pdf.ln(10)
 
             devices = get_rack_devices(rack['id'])
@@ -346,7 +346,7 @@ def export_to_pdf(tenant_data, locations):
                 pdf.set_font("Arial", size=12)
                 pdf.cell(200, 10, txt=f"Device Type: {device['device_type']['model']}", ln=True)
                 pdf.cell(200, 10, txt=f"Device Role: {device['device_role']['name']}", ln=True)
-                pdf.cell(200, 10, txt=f"Serial Number: {device['serial']}", ln=True)
+                pdf.cell(200, 10, txt=f"Serial Number: {device['serial'] if device['serial'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
                 pdf.ln(5)
 
@@ -376,7 +376,7 @@ def export_to_pdf(tenant_data, locations):
                 pdf.set_font("Arial", size=12)
                 pdf.cell(200, 10, txt=f"Device Type: {device['device_type']['model']}", ln=True)
                 pdf.cell(200, 10, txt=f"Device Role: {device['device_role']['name']}", ln=True)
-                pdf.cell(200, 10, txt=f"Serial Number: {device['serial']}", ln=True)
+                pdf.cell(200, 10, txt=f"Serial Number: {device['serial'] if device['serial'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
                 pdf.ln(5)
 
