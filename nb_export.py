@@ -364,6 +364,7 @@ def export_to_pdf(tenant_data, locations):
 
                 # Add Rack Position if available
                 if 'rack' in device and device['rack']:
+                    pdf.cell(200, 10, txt=f"Rack: {device['rack']['name']}", ln=True)
                     pdf.cell(200, 10, txt=f"Rack Position: {device['position']}", ln=True)
                     pdf.cell(200, 10, txt=f"Face: {device['face']['label']}", ln=True)
                     pdf.ln(5)
