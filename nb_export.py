@@ -347,7 +347,9 @@ def export_to_pdf(tenant_data, locations):
                 pdf.cell(200, 10, txt=f"Device Type: {device['device_type']['model']}", ln=True)
                 pdf.cell(200, 10, txt=f"Device Role: {device['device_role']['name']}", ln=True)
                 pdf.cell(200, 10, txt=f"Serial Number: {device['serial'] if device['serial'] else 'N/A'}", ln=True)
+                pdf.cell(200, 10, txt=f"Asset Tag: {device['asset_tag'] if device['asset_tag'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
+                pdf.cell(200, 10, txt=f"Location: {device['location']['name'] if device['location'] else 'N/A'}", ln=True)
                 pdf.ln(5)
 
                 # Add Interfaces
@@ -363,6 +365,7 @@ def export_to_pdf(tenant_data, locations):
                 # Add Rack Position if available
                 if 'rack' in device and device['rack']:
                     pdf.cell(200, 10, txt=f"Rack Position: {device['position']}", ln=True)
+                    pdf.cell(200, 10, txt=f"Face: {device['face']['label']}", ln=True)
                     pdf.ln(5)
 
         # Add Devices without Rack
