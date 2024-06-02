@@ -275,7 +275,8 @@ def export_device_interfaces(pdf, device):
                 if termination:
                     vlans = get_interface_vlans(interface)
                     pdf.cell(50, 5, txt=vlans, border=1)
-                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]), border=1)
+                    pdf.cell(50, 5, txt=", ".join([ip['address'] for ip in interface.get('ip_addresses', [])]),
+                             border=1)
                     connected_to = (termination['object']['device']['name'])
                     pdf.cell(50, 5, txt=connected_to, border=1)
                     pdf.cell(25, 5, txt=cable['type'], border=1)
@@ -329,7 +330,9 @@ def export_to_pdf(tenant_data, locations):
         pdf.cell(200, 10, txt=f"Location: {location['name']}", ln=True, align='C')
         pdf.ln(10)
         pdf.cell(200, 10, txt=f"Description: {location['description'] if location['description'] else 'N/A'}", ln=True)
-        pdf.cell(200, 10, txt=f"Physical Address: {location['physical_address'] if location['physical_address'] else 'N/A'}", ln=True)
+        pdf.cell(200, 10,
+                 txt=f"Physical Address: {location['physical_address'] if location['physical_address'] else 'N/A'}",
+                 ln=True)
         pdf.cell(200, 10, txt=f"Facility: {location['facility'] if location['facility'] else 'N/A'}", ln=True)
         pdf.cell(200, 10, txt=f"ASN: {location['asns'] if location['asns'] else 'N/A'}", ln=True)
         pdf.cell(200, 10, txt=f"Timezone: {location['time_zone'] if location['time_zone'] else 'N/A'}", ln=True)
@@ -386,7 +389,8 @@ def export_to_pdf(tenant_data, locations):
                 pdf.cell(200, 10, txt=f"Serial Number: {device['serial'] if device['serial'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Asset Tag: {device['asset_tag'] if device['asset_tag'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
-                pdf.cell(200, 10, txt=f"Location: {device['location']['name'] if device['location'] else 'N/A'}", ln=True)
+                pdf.cell(200, 10, txt=f"Location: {device['location']['name'] if device['location'] else 'N/A'}",
+                         ln=True)
                 pdf.ln(5)
 
                 # Add Interfaces
