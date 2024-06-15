@@ -162,13 +162,19 @@ def get_all_devices(tenant_id):
 def get_interface_vlans(interface):
     interface_vlans = ""
 
-    if interface['untagged_vlan']:
+    try:
         for vlan in interface['untagged_vlan']:
             interface_vlans += f"{vlan['vid']}U,"
+    except (KeyError, TypeError):
+        pass
 
-    if interface['tagged_vlans']:
+    try:
         for vlan in interface['tagged_vlans']:
             interface_vlans += f"{vlan['vid']}T,"
+    except (KeyError, TypeError):
+        pass
+
+    return interface_vlans[:-1] if interface_vlans else interface_vlans
 
     return interface_vlans[:-2]
 
