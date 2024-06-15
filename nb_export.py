@@ -176,7 +176,44 @@ def get_interface_vlans(interface):
 
     return interface_vlans[:-1] if interface_vlans else interface_vlans
 
-    return interface_vlans[:-2]
+
+# Get Color name from HEX value
+def get_color_name_from_hex_direct(hex_color):
+    switch = {
+        "aa1409": "Dark Red",
+        "f44336": "Red",
+        "e91e63": "Pink",
+        "ffe4e1": "Rose",
+        "ff66ff": "Fuchsia",
+        "9c27b0": "Purple",
+        "673ab7": "Dark Purple",
+        "3f51b5": "Indigo",
+        "2196f3": "Blue",
+        "03a9f4": "Light Blue",
+        "00bcd4": "Cyan",
+        "009688": "Teal",
+        "00ffff": "Aqua",
+        "2f6a31": "Dark Green",
+        "4caf50": "Green",
+        "8bc34a": "Light Green",
+        "cddd39": "Lime",
+        "ffeb3b": "Yellow",
+        "ffc107": "Amber",
+        "ff9800": "Orange",
+        "ff5722": "Dark Orange",
+        "795548": "Brown",
+        "c0c0c0": "Light Grey",
+        "9e9e9e": "Grey",
+        "607d8b": "Dark Grey",
+        "111111": "Black",
+        "ffffff": "White"
+    }
+
+    if hex_color:
+        #print(f"'{hex_color}' matched to '{switch.get(hex_color.lower(), 'Unknown Color')}'")
+        return switch.get(hex_color.lower(), "Unknown Color")
+    else:
+        return "N/A"
 
 
 # Export device interfaces to PDF
@@ -207,7 +244,7 @@ def export_device_interfaces(pdf, device):
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
-                    pdf.cell(20, 5, txt=cable['color'], border=1)
+                    pdf.cell(20, 5, txt=get_color_name_from_hex_direct(cable['color']), border=1)
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(35, 5, txt="N/A", border=1)
@@ -244,7 +281,7 @@ def export_device_interfaces(pdf, device):
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
-                    pdf.cell(20, 5, txt=cable['color'], border=1)
+                    pdf.cell(20, 5, txt=get_color_name_from_hex_direct(cable['color']), border=1)
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(35, 5, txt="N/A", border=1)
@@ -289,7 +326,7 @@ def export_device_interfaces(pdf, device):
                     length = cable['length'] if cable['length'] else 'N/A'
                     length_unit = cable['length_unit']['value'] if cable['length_unit'] else 'N/A'
                     pdf.cell(15, 5, txt=str(length) + ' ' + str(length_unit), border=1)
-                    pdf.cell(20, 5, txt=cable['color'], border=1)
+                    pdf.cell(20, 5, txt=get_color_name_from_hex_direct(cable['color']), border=1)
                 else:
                     pdf.cell(50, 5, txt="N/A", border=1)
                     pdf.cell(50, 5, txt="N/A", border=1)
