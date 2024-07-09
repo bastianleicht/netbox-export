@@ -220,7 +220,7 @@ def get_color_name_from_hex_direct(hex_color):
 def export_device_interfaces(pdf, device):
     frontports = get_device_frontports(device['id'])
     rearports = get_device_rearports(device['id'])
-    if device['device_role']['name'] == "Patchpanel":
+    if device['role']['name'] == "Patchpanel":
         pdf.add_page(orientation="L")
         pdf.cell(200, 10, txt="Front-Ports:", ln=True)
         pdf.set_font("Arial", size=10)
@@ -428,7 +428,7 @@ def export_to_pdf(tenant_data, locations):
                 pdf.ln(10)
                 pdf.set_font("Arial", size=12)
                 pdf.cell(200, 10, txt=f"Device Type: {device['device_type']['model']}", ln=True)
-                pdf.cell(200, 10, txt=f"Device Role: {device['device_role']['name']}", ln=True)
+                pdf.cell(200, 10, txt=f"Device Role: {device['role']['name']}", ln=True)
                 pdf.cell(200, 10, txt=f"Serial Number: {device['serial'] if device['serial'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Asset Tag: {device['asset_tag'] if device['asset_tag'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
@@ -465,7 +465,7 @@ def export_to_pdf(tenant_data, locations):
                 pdf.ln(10)
                 pdf.set_font("Arial", size=12)
                 pdf.cell(200, 10, txt=f"Device Type: {device['device_type']['model']}", ln=True)
-                pdf.cell(200, 10, txt=f"Device Role: {device['device_role']['name']}", ln=True)
+                pdf.cell(200, 10, txt=f"Device Role: {device['role']['name']}", ln=True)
                 pdf.cell(200, 10, txt=f"Serial Number: {device['serial'] if device['serial'] else 'N/A'}", ln=True)
                 pdf.cell(200, 10, txt=f"Site: {device['site']['name']}", ln=True)
                 pdf.ln(5)
